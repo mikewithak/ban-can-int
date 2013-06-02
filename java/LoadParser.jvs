@@ -1,0 +1,122 @@
+CREATE OR REPLACE AND RESOLVE JAVA SOURCE NAMED MGCCOP."LoadParser" AS
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.Gson;
+import java.sql.*;
+import oracle.sql.*;
+import oracle.jdbc.*;
+
+public class LoadParser implements SQLData {
+    private String created_at;
+    private String ended_at;
+    private String updated_at;
+    private String progress;
+    private String id;
+    private String import_type;
+    private oracle.sql.ARRAY supplied_batches;
+    private oracle.sql.ARRAY warnings;
+    private String c_accounts;
+    private String c_terms;
+    private String c_abstract_courses;
+    private String c_courses;
+    private String c_sections;
+    private String c_xlists;
+    private String c_users;
+    private String c_enrollments;
+    private String c_groups;
+    private String c_group_memberships;
+    private String c_grade_publishing_results;
+
+    public static void parseJson(LoadParser[] lin, String json)
+            throws SQLException {
+        try{
+            //Get an instance of the default Connection, needed for creating the ARRAY types to be returned
+            oracle.jdbc.OracleDriver ora = new oracle.jdbc.OracleDriver();
+            java.sql.Connection conn = ora.defaultConnection();
+            oracle.jdbc.OracleConnection oraConn = (oracle.jdbc.OracleConnection) ora.defaultConnection();
+            
+            //Deserialize the incoming JSON into an object
+            Gson gson = new Gson();
+            Load desLoad = new Load();
+            desLoad = gson.fromJson(json, Load.class);
+            
+            //Get values from the deserialized object to send back to database land
+            lin[0].created_at = desLoad.getCreated_at();
+            lin[0].ended_at = desLoad.getEnded_at();
+            lin[0].updated_at = desLoad.getUpdated_at();
+            lin[0].progress = desLoad.getProgress();
+            lin[0].id = desLoad.getId();
+            if (desLoad.getData() != null) { 
+                lin[0].import_type = desLoad.getData().getImport_type();
+                lin[0].supplied_batches = oraConn.createARRAY("LOADWARN_T",desLoad.getData().getSupplied_batches());
+                lin[0].warnings = oraConn.createARRAY("LOADWARNO_T",desLoad.getWarnings());
+                lin[0].c_accounts = desLoad.getData().getCounts().getAccounts();
+                lin[0].c_terms = desLoad.getData().getCounts().getTerms();
+                lin[0].c_abstract_courses = desLoad.getData().getCounts().getAbstract_courses();
+                lin[0].c_courses = desLoad.getData().getCounts().getCourses();
+                lin[0].c_sections = desLoad.getData().getCounts().getSections();
+                lin[0].c_xlists = desLoad.getData().getCounts().getXlists();
+                lin[0].c_users = desLoad.getData().getCounts().getUsers();
+                lin[0].c_enrollments = desLoad.getData().getCounts().getEnrollments();
+                lin[0].c_groups = desLoad.getData().getCounts().getGroups();
+                lin[0].c_group_memberships = desLoad.getData().getCounts().getGroup_memberships();
+                lin[0].c_grade_publishing_results = desLoad.getData().getCounts().getGrade_publishing_results();
+            }
+        }catch(SQLException se){
+            se.printStackTrace();
+        }
+    }
+
+    // Implement SQLData interface.
+    private String sql_type;
+
+    public String getSQLTypeName() throws SQLException {
+        return sql_type;
+    }
+
+    public void readSQL(SQLInput stream, String typeName) throws SQLException {
+        sql_type = typeName;
+        created_at = stream.readString();
+        ended_at = stream.readString();
+        updated_at = stream.readString();
+        progress = stream.readString();
+        id = stream.readString();
+        import_type = stream.readString();
+        warnings = (oracle.sql.ARRAY) stream.readArray();
+        supplied_batches = (oracle.sql.ARRAY) stream.readArray();
+        c_accounts = stream.readString();
+        c_terms = stream.readString();
+        c_abstract_courses = stream.readString();
+        c_courses = stream.readString();
+        c_sections = stream.readString();
+        c_xlists = stream.readString();
+        c_users = stream.readString();
+        c_enrollments = stream.readString();
+        c_groups = stream.readString();
+        c_group_memberships = stream.readString();
+        c_grade_publishing_results = stream.readString();
+    }
+
+    public void writeSQL(SQLOutput stream) throws SQLException {
+        stream.writeString(created_at);
+        stream.writeString(ended_at);
+        stream.writeString(updated_at);
+        stream.writeString(progress);
+        stream.writeString(id);
+        stream.writeString(import_type);
+        stream.writeArray(supplied_batches);
+        stream.writeArray(warnings);
+        stream.writeString(c_accounts);
+        stream.writeString(c_terms);
+        stream.writeString(c_abstract_courses);
+        stream.writeString(c_courses);
+        stream.writeString(c_sections);
+        stream.writeString(c_xlists);
+        stream.writeString(c_users);
+        stream.writeString(c_enrollments);
+        stream.writeString(c_groups);
+        stream.writeString(c_group_memberships);
+        stream.writeString(c_grade_publishing_results);
+    }
+
+}
+/

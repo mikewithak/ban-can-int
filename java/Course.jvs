@@ -1,0 +1,74 @@
+CREATE OR REPLACE AND RESOLVE JAVA SOURCE NAMED MGCCOP."Course" AS
+import com.google.gson.annotations.SerializedName;
+/*---------------------------------------------------------- 
+ * This class is the Java object representation of the 
+ * Canvas "Course" JSON object.  It exists
+ * purely for deserialization by GSON
+ *---------------------------------------------------------*/
+public class Course {
+    
+    // members for GSON deserialization
+    private String account_id;
+    private String course_code;
+    private String default_view;
+    private String id;
+    private String name;
+    private String start_at;
+    private String end_at;
+    private String public_syllabus;
+    private String hide_final_grades;
+    private String sis_course_id;
+    private String workflow_state;
+    private Calendar calendar;
+    
+    //Getters and Setters
+    public String getAccountId() { return account_id; }
+    public void setAccountId(String account_id) { this.account_id = account_id; }
+
+    public String getCourseCode() { return course_code; }
+    public void setCourseCode(String course_code) { this.course_code = course_code; }
+
+    public String getDefaultView() { return default_view; }
+    public void setDefaultView(String default_view) { this.default_view = default_view; }
+
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public String getStartAt() { return start_at; }
+    public void setStartAt(String start_at) { this.start_at = start_at; }
+
+    public String getEndAt() { return end_at; }
+    public void setEndAt(String end_at) { this.end_at = end_at; }
+
+    public String getPublicSyllabus() { return public_syllabus; }
+    public void setPublicSyllabus(String public_syllabus) { this.public_syllabus = public_syllabus; }
+
+    public String getHideFinalGrades() { return hide_final_grades; }
+    public void setHideFinalGrades(String hide_final_grades) { this.hide_final_grades = hide_final_grades; }
+
+    public String getSisCourseId() { return sis_course_id; }
+    public void setSisCourseId(String sis_course_id) { this.sis_course_id = sis_course_id; }
+
+    public String getWorkFlowState() { return workflow_state; }
+    public void setWorkFlowState(String workflow_state) { this.workflow_state = workflow_state; }
+
+    public Calendar getCalendar() { return calendar; }
+    public void setCalendar(Calendar calendar) { this.calendar = calendar; }
+
+}
+
+/*----------------------------
+ * Nested JSON object classes
+ * Below this point
+ *----------------------------*/
+public class Calendar {
+    private String ics;
+    
+    public String getIcs() { return ics; }
+    public void setIcs(String ics) { this.ics = ics; }
+    
+ }
+/

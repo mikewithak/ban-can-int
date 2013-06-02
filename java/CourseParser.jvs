@@ -1,0 +1,82 @@
+CREATE OR REPLACE AND RESOLVE JAVA SOURCE NAMED MGCCOP."CourseParser" AS
+import com.google.gson.annotations.SerializedName;
+import com.google.gson.Gson;
+import java.sql.*;
+
+
+public class CourseParser implements SQLData{
+   private String account_id;
+   private String course_code;
+   private String default_view;
+    private String id;
+    private String name;
+    private String start_at;
+    private String end_at;
+    private String public_syllabus;
+    private String hide_final_grades;
+    private String sis_course_id;
+    private String workflow_state;
+    private String ics;
+   
+   public static void parseJson(CourseParser[] cin, String json)  {
+   
+       //Deserialize the incoming JSON into an object
+       Gson gson = new Gson();
+       Course desCourse = new Course();
+       desCourse = gson.fromJson(json, Course.class);
+       
+       //Get values from the deserialized object to send back to database land
+       cin[0].account_id = desCourse.getAccountId();
+       cin[0].course_code = desCourse.getCourseCode();
+       cin[0].default_view = desCourse.getDefaultView();
+       cin[0].id = desCourse.getId();
+       cin[0].name = desCourse.getName();
+       cin[0].start_at = desCourse.getStartAt();
+       cin[0].end_at = desCourse.getEndAt();
+       cin[0].public_syllabus = desCourse.getPublicSyllabus();
+       cin[0].hide_final_grades = desCourse.getHideFinalGrades();
+       cin[0].sis_course_id = desCourse.getSisCourseId();
+       cin[0].workflow_state = desCourse.getWorkFlowState();
+       if (desCourse.getCalendar() != null) {
+         cin[0].ics = desCourse.getCalendar().getIcs();
+       }
+   }
+   
+   // Implement SQLData interface.
+  private String sql_type;
+  
+  public String getSQLTypeName() throws SQLException {return sql_type;}
+
+  public void readSQL(SQLInput stream, String typeName) throws SQLException {
+    sql_type = typeName;
+    account_id = stream.readString();
+    course_code = stream.readString();
+    default_view= stream.readString();
+    id= stream.readString();
+    name= stream.readString();
+    start_at= stream.readString();
+    end_at= stream.readString();
+    public_syllabus= stream.readString();
+    hide_final_grades= stream.readString();
+    sis_course_id= stream.readString();
+    workflow_state = stream.readString();
+    ics = stream.readString();
+  }
+
+  public void writeSQL(SQLOutput stream) throws SQLException {
+    stream.writeString(account_id);
+    stream.writeString(course_code);
+    stream.writeString(default_view);
+    stream.writeString(id);
+    stream.writeString(name);
+    stream.writeString(start_at);
+    stream.writeString(end_at);
+    stream.writeString(public_syllabus);
+    stream.writeString(hide_final_grades);
+    stream.writeString(sis_course_id);
+    stream.writeString(workflow_state);
+    stream.writeString(ics);
+  }
+
+}
+/
