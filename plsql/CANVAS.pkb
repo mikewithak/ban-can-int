@@ -2,8 +2,8 @@
 CREATE OR REPLACE PACKAGE BODY MGCCOP.canvas
 AS
    wallet_path   CONSTANT VARCHAR2 (100) := '/d07/production/canvas/wallet/';
-   wallet_pass   CONSTANT VARCHAR2 (50) := 'espkh232';
-   inst_token    CONSTANT VARCHAR2 (100) := '1613~J2F54qJ3tjoFgFmlTM8fF5i1gf1qDJGlelwWPeFVHm0cFx6E7nPLwNArcSV7ij31';
+   wallet_pass   CONSTANT VARCHAR2 (50) := 'wallet_password';
+   inst_token    CONSTANT VARCHAR2 (100) := 'canvas_oauth_token';
 
    /* Returns employee address if one exists, otherwise
     * returns the student address */
