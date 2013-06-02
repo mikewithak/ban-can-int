@@ -1,2 +1,4 @@
 Integration of Canvas LMS with Banner for a specific institution.
 All processes live in an Oracle database as SQL, PL/SQL, and Java.
+Requires the GSON library be loaded via loadjava in the schema being used.
+https://code.google.com/p/google-gson/
