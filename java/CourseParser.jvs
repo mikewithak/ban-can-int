@@ -8,15 +8,15 @@ public class CourseParser implements SQLData{
    private String account_id;
    private String course_code;
    private String default_view;
-    private String id;
-    private String name;
-    private String start_at;
-    private String end_at;
-    private String public_syllabus;
-    private String hide_final_grades;
-    private String sis_course_id;
-    private String workflow_state;
-    private String ics;
+   private String id;
+   private String name;
+   private String start_at;
+   private String end_at;
+   private String public_syllabus;
+   private String hide_final_grades;
+   private String sis_course_id;
+   private String workflow_state;
+   private String ics;
    
    public static void parseJson(CourseParser[] cin, String json)  {
    
