@@ -106,6 +106,7 @@ AS
       status   VARCHAR (4000);
       course  mgccop.course_t;
    BEGIN
+      course := NEW course_t();
       UTL_HTTP.set_wallet (PATH => 'file:' || wallet_path, password => wallet_pass);
       url := 'https://mgccc.instructure.com/api/v1/courses/sis_course_id:' || course_id;
       creq := UTL_HTTP.begin_request (url, 'GET', 'HTTP/1.1');
@@ -122,9 +123,10 @@ AS
       END;
 
       UTL_HTTP.end_response (cresp);
-      status := REGEXP_REPLACE (buf, '.+"workflow_state":"([[:alpha:]]+)?.*', '\1');
-      DBMS_OUTPUT.put_line (status);
-      RETURN status;
+      --status := REGEXP_REPLACE (buf, '.+"workflow_state":"([[:alpha:]]+)?.*', '\1');
+	  mgccop.p_parse_course(course, buf);
+      DBMS_OUTPUT.put_line (course.workflow_state);
+      RETURN course.workflow_state;
    END f_course_stat;
 
    /*Updates status of specified course to "available"
